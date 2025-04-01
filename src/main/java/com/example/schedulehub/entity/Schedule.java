@@ -13,7 +13,7 @@ public class Schedule extends AuditableEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String userName;
 
     @Column(nullable = false)
