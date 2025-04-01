@@ -26,4 +26,9 @@ public class Schedule extends AuditableEntity{
         this.title = title;
         this.contents = contents;
     }
+
+    public void updateSchedule(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }
