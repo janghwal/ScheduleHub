@@ -20,4 +20,10 @@ public class Schedule extends AuditableEntity{
     private String title;
 
     private String contents;
+
+    public Schedule(String userName, String title, String contents) {
+        this.userName = userName;
+        this.title = title;
+        this.contents = contents;
+    }
 }
