@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor // 생성자 주입
@@ -23,5 +25,13 @@ public class ScheduleController {
         ScheduleResponseDto scheduleResponseDto = scheduleService.createSchedule(scheduleRequestDto);
 
         return new ResponseEntity<>(scheduleResponseDto ,HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule(){
+
+        List<ScheduleResponseDto> allSchedule = scheduleService.findAllSchedule();
+
+        return new ResponseEntity<>(allSchedule, HttpStatus.OK);
     }
 }

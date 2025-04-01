@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,12 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         Schedule saveSchedule = scheduleRepository.save(schedule);
 
-        return new ScheduleResponseDto(saveSchedule.getUserName(), saveSchedule.getTitle(), saveSchedule.getContents());
+        return new ScheduleResponseDto(saveSchedule.getScheduleId(), saveSchedule.getUserName(), saveSchedule.getTitle(), saveSchedule.getContents());
+    }
+
+    @Override
+    public List<ScheduleResponseDto> findAllSchedule() {
+
+        return scheduleRepository.findAll().stream().map(ScheduleResponseDto::toScheduleResponseDto).toList();
     }
 }
