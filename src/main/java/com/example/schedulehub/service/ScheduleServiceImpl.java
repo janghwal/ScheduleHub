@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -50,5 +49,13 @@ public class ScheduleServiceImpl implements ScheduleService{
         findSchedule.updateSchedule(scheduleRequestDto.getTitle(), scheduleRequestDto.getContents());
 
         return ScheduleResponseDto.toScheduleResponseDto(findSchedule);
+    }
+
+    @Override
+    public void deleteSchedule(Long id) {
+
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+
+        scheduleRepository.delete(findSchedule);
     }
 }
