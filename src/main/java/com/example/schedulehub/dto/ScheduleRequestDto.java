@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ScheduleRequestDto {
 
-    private String userName;
+    // 추후에 이메일 형식 검증 필요
+    private String email;
 
     private String title;
 
