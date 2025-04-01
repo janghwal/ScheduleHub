@@ -2,6 +2,7 @@ package com.example.schedulehub.controller;
 
 import com.example.schedulehub.dto.ScheduleRequestDto;
 import com.example.schedulehub.dto.ScheduleResponseDto;
+import com.example.schedulehub.entity.Schedule;
 import com.example.schedulehub.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,5 +34,13 @@ public class ScheduleController {
         List<ScheduleResponseDto> allSchedule = scheduleService.findAllSchedule();
 
         return new ResponseEntity<>(allSchedule, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long id){
+
+        ScheduleResponseDto findScheduleById = scheduleService.findScheduleById(id);
+
+        return new ResponseEntity<>(findScheduleById, HttpStatus.OK);
     }
 }
