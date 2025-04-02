@@ -3,11 +3,11 @@ package com.example.schedulehub.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
-public class SignUpResponseDto {
+@AllArgsConstructor
+public class UserRequestDto {
 
-    private Long id;
+    private Long Id;
 
     private String userName;
 

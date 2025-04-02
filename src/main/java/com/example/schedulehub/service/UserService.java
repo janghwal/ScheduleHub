@@ -1,9 +1,13 @@
 package com.example.schedulehub.service;
 
 import com.example.schedulehub.dto.SignUpRequestDto;
-import com.example.schedulehub.dto.SignUpResponseDto;
+import com.example.schedulehub.dto.UserResponseDto;
+
+import java.util.List;
 
 public interface UserService {
 
-    SignUpResponseDto scheduleHubSignUp(SignUpRequestDto signUpRequestDto);
+    UserResponseDto scheduleHubSignUp(SignUpRequestDto signUpRequestDto);
+
+    List<UserResponseDto> findAllUser();
 }
