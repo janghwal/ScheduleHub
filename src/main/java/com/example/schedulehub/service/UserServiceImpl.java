@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public UserResponseDto scheduleHubSignUp(SignUpRequestDto signUpRequestDto) {
 
-        User user = new User(signUpRequestDto.getUserName(), signUpRequestDto.getEmail());
+        User user = new User(signUpRequestDto.getUserName(), signUpRequestDto.getEmail(), signUpRequestDto.getPassword());
 
         Optional<User> userByEmail = userRepository.findUserByEmail(signUpRequestDto.getEmail());
 
@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService{
         return new UserResponseDto(findUser);
     }
 
+    // 인증 필요
     @Override
     @Transactional
     public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
@@ -79,6 +80,7 @@ public class UserServiceImpl implements UserService{
         return new UserResponseDto(findUser);
     }
 
+    // 인증 필요
     @Override
     public void deleteUser(Long id) {
         User user = userRepository.findUserByIdOrElseThrow(id);
