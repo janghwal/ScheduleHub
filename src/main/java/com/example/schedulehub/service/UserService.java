@@ -10,4 +10,8 @@ public interface UserService {
     UserResponseDto scheduleHubSignUp(SignUpRequestDto signUpRequestDto);
 
     List<UserResponseDto> findAllUser();
+
+    UserResponseDto findUserById(Long id);
+
+    UserResponseDto findUserByEmail(String email);
 }

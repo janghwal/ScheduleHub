@@ -34,19 +34,20 @@ public class UserController {
         return new ResponseEntity<>(findAllUser, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<UserResponseDto> findUserById(){
+    @GetMapping("/find/{id}")
+    public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long id){
 
+        UserResponseDto findUser = userService.findUserById(id);
 
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(findUser, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/find")
     public ResponseEntity<UserResponseDto> findUserByEmail(@RequestParam String email){
 
+        UserResponseDto findUser = userService.findUserByEmail(email);
 
-
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(findUser, HttpStatus.OK);
     }
 
 

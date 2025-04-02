@@ -30,4 +30,20 @@ public class UserServiceImpl implements UserService{
 
         return userRepository.findAll().stream().map(UserResponseDto::toUserResponseDto).toList();
     }
+
+    @Override
+    public UserResponseDto findUserById(Long id) {
+
+        User findUser = userRepository.findUserByIdOrElseThrow(id);
+
+        return new UserResponseDto(findUser);
+    }
+
+    @Override
+    public UserResponseDto findUserByEmail(String email) {
+
+        User findUser = userRepository.findUserByEmailOrElseThrow(email);
+
+        return new UserResponseDto(findUser);
+    }
 }
