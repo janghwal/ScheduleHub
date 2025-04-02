@@ -7,8 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserRequestDto {
 
-    private Long Id;
-
     private String userName;
 
     private String email;
