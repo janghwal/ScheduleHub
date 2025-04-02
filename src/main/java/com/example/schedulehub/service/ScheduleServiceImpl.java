@@ -3,10 +3,15 @@ package com.example.schedulehub.service;
 import com.example.schedulehub.dto.ScheduleRequestDto;
 import com.example.schedulehub.dto.ScheduleResponseDto;
 import com.example.schedulehub.entity.Schedule;
+import com.example.schedulehub.entity.User;
 import com.example.schedulehub.repository.ScheduleRepository;
+import com.example.schedulehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,10 +22,16 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     private final ScheduleRepository scheduleRepository;
 
+    private final UserRepository userRepository;
+
+    @Transactional
     @Override
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto) {
 
-        Schedule schedule = new Schedule(scheduleRequestDto.getUserName(), scheduleRequestDto.getTitle(), scheduleRequestDto.getContents());
+        User findUser = userRepository.findUserByEmailOrElseThrow(scheduleRequestDto.getEmail());
+
+        Schedule schedule = new Schedule(findUser.getUserName(), scheduleRequestDto.getTitle(), scheduleRequestDto.getContents());
+        schedule.setUser(findUser);
 
         Schedule saveSchedule = scheduleRepository.save(schedule);
 
@@ -41,12 +52,22 @@ public class ScheduleServiceImpl implements ScheduleService{
         return new ScheduleResponseDto(findSchedule.getScheduleId(), findSchedule.getUserName(), findSchedule.getTitle(), findSchedule.getContents());
     }
 
+    @Transactional
     @Override
     public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
 
         Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
 
-        findSchedule.updateSchedule(scheduleRequestDto.getTitle(), scheduleRequestDto.getContents());
+        if(scheduleRequestDto.getTitle() == null && scheduleRequestDto.getContents() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
+        }else if(scheduleRequestDto.getTitle() == null){
+            findSchedule.setContents(scheduleRequestDto.getContents());
+        }else if(scheduleRequestDto.getContents() == null){
+            findSchedule.setTitle(scheduleRequestDto.getTitle());
+        }else{
+            findSchedule.setTitle(scheduleRequestDto.getTitle());
+            findSchedule.setContents(scheduleRequestDto.getContents());
+        }
 
         return ScheduleResponseDto.toScheduleResponseDto(findSchedule);
     }
