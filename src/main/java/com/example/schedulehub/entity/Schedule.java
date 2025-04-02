@@ -18,9 +18,11 @@ public class Schedule extends AuditableEntity{
     @Column(nullable = false)
     private String userName;
 
+    @Setter
     @Column(nullable = false)
     private String title;
 
+    @Setter
     private String contents;
 
     @Setter
@@ -31,11 +33,6 @@ public class Schedule extends AuditableEntity{
 
     public Schedule(String userName, String title, String contents) {
         this.userName = userName;
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public void updateSchedule(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }

@@ -8,8 +8,10 @@ import com.example.schedulehub.repository.ScheduleRepository;
 import com.example.schedulehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -50,12 +52,22 @@ public class ScheduleServiceImpl implements ScheduleService{
         return new ScheduleResponseDto(findSchedule.getScheduleId(), findSchedule.getUserName(), findSchedule.getTitle(), findSchedule.getContents());
     }
 
+    @Transactional
     @Override
     public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
 
         Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
 
-        findSchedule.updateSchedule(scheduleRequestDto.getTitle(), scheduleRequestDto.getContents());
+        if(scheduleRequestDto.getTitle() == null && scheduleRequestDto.getContents() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
+        }else if(scheduleRequestDto.getTitle() == null){
+            findSchedule.setContents(scheduleRequestDto.getContents());
+        }else if(scheduleRequestDto.getContents() == null){
+            findSchedule.setTitle(scheduleRequestDto.getTitle());
+        }else{
+            findSchedule.setTitle(scheduleRequestDto.getTitle());
+            findSchedule.setContents(scheduleRequestDto.getContents());
+        }
 
         return ScheduleResponseDto.toScheduleResponseDto(findSchedule);
     }
