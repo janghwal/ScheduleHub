@@ -24,6 +24,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     private final UserRepository userRepository;
 
+    // 인증 필요
     @Transactional
     @Override
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto) {
@@ -52,6 +53,7 @@ public class ScheduleServiceImpl implements ScheduleService{
         return new ScheduleResponseDto(findSchedule.getScheduleId(), findSchedule.getUserName(), findSchedule.getTitle(), findSchedule.getContents());
     }
 
+    // 인증 필요
     @Transactional
     @Override
     public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
@@ -72,6 +74,7 @@ public class ScheduleServiceImpl implements ScheduleService{
         return ScheduleResponseDto.toScheduleResponseDto(findSchedule);
     }
 
+    // 인증 필요
     @Override
     public void deleteSchedule(Long id) {
 
