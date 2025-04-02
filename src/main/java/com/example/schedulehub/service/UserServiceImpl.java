@@ -1,5 +1,6 @@
 package com.example.schedulehub.service;
 
+import com.example.schedulehub.dto.LoginRequestDto;
 import com.example.schedulehub.dto.SignUpRequestDto;
 import com.example.schedulehub.dto.UserRequestDto;
 import com.example.schedulehub.dto.UserResponseDto;
@@ -86,5 +87,18 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findUserByIdOrElseThrow(id);
 
         userRepository.delete(user);
+    }
+
+    @Transactional
+    @Override
+    public Optional<User> login(LoginRequestDto loginRequestDto) {
+
+        User userInfo = userRepository.findUserByEmailOrElseThrow(loginRequestDto.getEmail());
+
+        if(!userInfo.getPassword().equals(loginRequestDto.getPassword())){
+            return Optional.empty();
+        }
+
+        return Optional.of(userInfo);
     }
 }
