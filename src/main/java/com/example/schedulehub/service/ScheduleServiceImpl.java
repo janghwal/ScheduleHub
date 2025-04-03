@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -58,11 +59,11 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public ScheduleResponseDto updateSchedule(Long scheduleId, Long userId, ScheduleRequestDto scheduleRequestDto) {
 
-        if(isPasswordCorrect(scheduleId, userId)){
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
+
+        if(!Objects.equals(findSchedule.getUser().getUserId(), userId)){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-
-        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
 
         if(scheduleRequestDto.getTitle() == null && scheduleRequestDto.getContents() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
@@ -82,21 +83,13 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public void deleteSchedule(Long scheduleId, Long userId) {
 
-        if(isPasswordCorrect(scheduleId, userId)){
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
+
+        if(!Objects.equals(findSchedule.getUser().getUserId(), userId)){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-
-        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
 
         scheduleRepository.delete(findSchedule);
     }
 
-    private boolean isPasswordCorrect(Long scheduleId, Long userId){
-
-        String creatorPassword = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId).getUser().getPassword();
-
-        String accessPassword = userRepository.findUserByIdOrElseThrow(userId).getPassword();
-
-        return creatorPassword.equals(accessPassword);
-    }
 }
