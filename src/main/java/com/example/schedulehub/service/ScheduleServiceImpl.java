@@ -76,10 +76,23 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     // 인증 필요
     @Override
-    public void deleteSchedule(Long id) {
+    public void deleteSchedule(Long scheduleId, Long userId) {
 
-        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+        if(isPasswordCorrect(scheduleId, userId)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
 
         scheduleRepository.delete(findSchedule);
+    }
+
+    private boolean isPasswordCorrect(Long scheduleId, Long userId){
+
+        String creatorPassword = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId).getUser().getPassword();
+
+        String accessPassword = userRepository.findUserByIdOrElseThrow(userId).getPassword();
+
+        return creatorPassword.equals(accessPassword);
     }
 }

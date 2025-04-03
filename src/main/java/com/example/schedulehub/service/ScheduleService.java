@@ -14,5 +14,5 @@ public interface ScheduleService {
 
     ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto);
 
-    void deleteSchedule(Long id);
+    void deleteSchedule(Long scheduleId, Long userId);
 }
