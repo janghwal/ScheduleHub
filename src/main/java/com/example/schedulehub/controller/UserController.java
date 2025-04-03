@@ -4,9 +4,10 @@ package com.example.schedulehub.controller;
 import com.example.schedulehub.dto.SignUpRequestDto;
 import com.example.schedulehub.dto.UserRequestDto;
 import com.example.schedulehub.dto.UserResponseDto;
-import com.example.schedulehub.entity.User;
 import com.example.schedulehub.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,13 +75,20 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(HttpServletRequest httpRequest){
+    public ResponseEntity<Void> deleteUser(HttpServletRequest httpRequest, HttpServletResponse httpResponse){
 
         HttpSession session = httpRequest.getSession(false);
 
         Long userId = (Long) session.getAttribute("sessionKey");
 
         userService.deleteUser(userId);
+
+        session.invalidate();
+
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setMaxAge(0);
+
+        httpResponse.addCookie(cookie);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
