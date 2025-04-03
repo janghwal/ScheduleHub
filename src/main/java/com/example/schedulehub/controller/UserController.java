@@ -4,7 +4,10 @@ package com.example.schedulehub.controller;
 import com.example.schedulehub.dto.SignUpRequestDto;
 import com.example.schedulehub.dto.UserRequestDto;
 import com.example.schedulehub.dto.UserResponseDto;
+import com.example.schedulehub.entity.User;
 import com.example.schedulehub.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -53,21 +56,31 @@ public class UserController {
         return new ResponseEntity<>(findUser, HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping
     public ResponseEntity<UserResponseDto> updateUser(
-            @PathVariable Long id,
-            @RequestBody UserRequestDto userRequestDto
+            @RequestBody UserRequestDto userRequestDto,
+            HttpServletRequest httpRequest
             ){
 
-        UserResponseDto userResponseDto = userService.updateUser(id, userRequestDto);
+        HttpSession session = httpRequest.getSession(false);
+
+        Long userId = (Long) session.getAttribute("sessionKey");
+
+        log.info(String.valueOf(userId));
+
+        UserResponseDto userResponseDto = userService.updateUser(userId, userRequestDto);
 
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(HttpServletRequest httpRequest){
 
-        userService.deleteUser(id);
+        HttpSession session = httpRequest.getSession(false);
+
+        Long userId = (Long) session.getAttribute("sessionKey");
+
+        userService.deleteUser(userId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
