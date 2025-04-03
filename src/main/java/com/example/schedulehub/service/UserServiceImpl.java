@@ -67,15 +67,23 @@ public class UserServiceImpl implements UserService{
 
         User findUser = userRepository.findUserByIdOrElseThrow(userId);
 
-        if(userRequestDto.getUserName() == null && userRequestDto.getEmail() == null){
+        if(userRequestDto.getUserName() == null && userRequestDto.getEmail() == null && userRequestDto.getPassword() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
-        }else if(userRequestDto.getUserName() == null){
+        }
+
+        if(userRequestDto.getEmail() != null){
+            if(userRepository.findUserByEmail(userRequestDto.getEmail()).isPresent() && !findUser.getEmail().equals(userRequestDto.getEmail())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "값이 중복됩니다.");
+            }
             findUser.setEmail(userRequestDto.getEmail());
-        }else if(userRequestDto.getEmail() == null){
+        }
+
+        if(userRequestDto.getUserName() != null){
             findUser.setUserName(userRequestDto.getUserName());
-        }else{
-            findUser.setUserName(userRequestDto.getUserName());
-            findUser.setEmail(userRequestDto.getEmail());
+        }
+
+        if(userRequestDto.getPassword() != null){
+            findUser.setPassword(userRequestDto.getPassword());
         }
 
         return new UserResponseDto(findUser);
