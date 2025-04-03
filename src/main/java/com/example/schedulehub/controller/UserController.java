@@ -9,14 +9,18 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +30,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> scheduleHubSignUp(@RequestBody SignUpRequestDto signUpRequestDto){
+    public ResponseEntity<UserResponseDto> scheduleHubSignUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto){
 
         UserResponseDto userResponseDto = userService.scheduleHubSignUp(signUpRequestDto);
 
@@ -50,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<UserResponseDto> findUserByEmail(@RequestParam String email){
+    public ResponseEntity<UserResponseDto> findUserByEmail(@Email(message = "이메일 형식을 입력하세요") @RequestParam String email){
 
         UserResponseDto findUser = userService.findUserByEmail(email);
 
@@ -59,7 +63,7 @@ public class UserController {
 
     @PatchMapping
     public ResponseEntity<UserResponseDto> updateUser(
-            @RequestBody UserRequestDto userRequestDto,
+            @Valid @RequestBody UserRequestDto userRequestDto,
             HttpServletRequest httpRequest
             ){
 
