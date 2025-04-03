@@ -1,5 +1,6 @@
 package com.example.schedulehub.service;
 
+import com.example.schedulehub.dto.LoginRequestDto;
 import com.example.schedulehub.dto.SignUpRequestDto;
 import com.example.schedulehub.dto.UserRequestDto;
 import com.example.schedulehub.dto.UserResponseDto;
@@ -44,9 +45,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResponseDto findUserById(Long id) {
+    public UserResponseDto findUserById(Long userId) {
 
-        User findUser = userRepository.findUserByIdOrElseThrow(id);
+        User findUser = userRepository.findUserByIdOrElseThrow(userId);
 
         return new UserResponseDto(findUser);
     }
@@ -62,19 +63,27 @@ public class UserServiceImpl implements UserService{
     // 인증 필요
     @Override
     @Transactional
-    public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
+    public UserResponseDto updateUser(Long userId, UserRequestDto userRequestDto) {
 
-        User findUser = userRepository.findUserByIdOrElseThrow(id);
+        User findUser = userRepository.findUserByIdOrElseThrow(userId);
 
-        if(userRequestDto.getUserName() == null && userRequestDto.getEmail() == null){
+        if(userRequestDto.getUserName() == null && userRequestDto.getEmail() == null && userRequestDto.getPassword() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
-        }else if(userRequestDto.getUserName() == null){
+        }
+
+        if(userRequestDto.getEmail() != null){
+            if(userRepository.findUserByEmail(userRequestDto.getEmail()).isPresent() && !findUser.getEmail().equals(userRequestDto.getEmail())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "값이 중복됩니다.");
+            }
             findUser.setEmail(userRequestDto.getEmail());
-        }else if(userRequestDto.getEmail() == null){
+        }
+
+        if(userRequestDto.getUserName() != null){
             findUser.setUserName(userRequestDto.getUserName());
-        }else{
-            findUser.setUserName(userRequestDto.getUserName());
-            findUser.setEmail(userRequestDto.getEmail());
+        }
+
+        if(userRequestDto.getPassword() != null){
+            findUser.setPassword(userRequestDto.getPassword());
         }
 
         return new UserResponseDto(findUser);
@@ -82,9 +91,22 @@ public class UserServiceImpl implements UserService{
 
     // 인증 필요
     @Override
-    public void deleteUser(Long id) {
-        User user = userRepository.findUserByIdOrElseThrow(id);
+    public void deleteUser(Long userId) {
+        User user = userRepository.findUserByIdOrElseThrow(userId);
 
         userRepository.delete(user);
+    }
+
+    @Transactional
+    @Override
+    public Optional<User> login(LoginRequestDto loginRequestDto) {
+
+        User userInfo = userRepository.findUserByEmailOrElseThrow(loginRequestDto.getEmail());
+
+        if(!userInfo.getPassword().equals(loginRequestDto.getPassword())){
+            return Optional.empty();
+        }
+
+        return Optional.of(userInfo);
     }
 }

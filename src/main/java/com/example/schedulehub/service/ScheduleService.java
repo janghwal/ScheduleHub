@@ -10,9 +10,9 @@ public interface ScheduleService {
 
     List<ScheduleResponseDto> findAllSchedule();
 
-    ScheduleResponseDto findScheduleById(Long id);
+    ScheduleResponseDto findScheduleById(Long scheduleId);
 
-    ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto);
+    ScheduleResponseDto updateSchedule(Long scheduleId, Long userId, ScheduleRequestDto scheduleRequestDto);
 
-    void deleteSchedule(Long id);
+    void deleteSchedule(Long scheduleId, Long userId);
 }

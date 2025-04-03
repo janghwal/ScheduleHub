@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -29,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto) {
 
-        User findUser = userRepository.findUserByEmailOrElseThrow(scheduleRequestDto.getEmail());
+        User findUser = userRepository.findUserByIdOrElseThrow(scheduleRequestDto.getUserId());
 
         Schedule schedule = new Schedule(findUser.getUserName(), scheduleRequestDto.getTitle(), scheduleRequestDto.getContents());
         schedule.setUser(findUser);
@@ -46,9 +47,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public ScheduleResponseDto findScheduleById(Long id) {
+    public ScheduleResponseDto findScheduleById(Long scheduleId) {
 
-        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
 
         return new ScheduleResponseDto(findSchedule.getScheduleId(), findSchedule.getUserName(), findSchedule.getTitle(), findSchedule.getContents());
     }
@@ -56,9 +57,13 @@ public class ScheduleServiceImpl implements ScheduleService{
     // 인증 필요
     @Transactional
     @Override
-    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public ScheduleResponseDto updateSchedule(Long scheduleId, Long userId, ScheduleRequestDto scheduleRequestDto) {
 
-        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
+
+        if(!Objects.equals(findSchedule.getUser().getUserId(), userId)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
 
         if(scheduleRequestDto.getTitle() == null && scheduleRequestDto.getContents() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
@@ -76,10 +81,15 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     // 인증 필요
     @Override
-    public void deleteSchedule(Long id) {
+    public void deleteSchedule(Long scheduleId, Long userId) {
 
-        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
+
+        if(!Objects.equals(findSchedule.getUser().getUserId(), userId)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
 
         scheduleRepository.delete(findSchedule);
     }
+
 }

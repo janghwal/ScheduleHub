@@ -3,6 +3,8 @@ package com.example.schedulehub.controller;
 import com.example.schedulehub.dto.ScheduleRequestDto;
 import com.example.schedulehub.dto.ScheduleResponseDto;
 import com.example.schedulehub.service.ScheduleService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,12 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto){
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto, HttpServletRequest httpRequest){
+
+        HttpSession session = httpRequest.getSession(false);
+        Long userId = (Long) session.getAttribute("sessionKey");
+
+        scheduleRequestDto.setUserId(userId);
 
         ScheduleResponseDto scheduleResponseDto = scheduleService.createSchedule(scheduleRequestDto);
 
@@ -35,27 +42,39 @@ public class ScheduleController {
         return new ResponseEntity<>(allSchedule, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long id){
+    @GetMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long scheduleId){
 
-        ScheduleResponseDto findScheduleById = scheduleService.findScheduleById(id);
+        ScheduleResponseDto findScheduleById = scheduleService.findScheduleById(scheduleId);
 
         return new ResponseEntity<>(findScheduleById, HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
-            @PathVariable Long id,
-            @RequestBody ScheduleRequestDto scheduleRequestDto){
+            @PathVariable Long scheduleId,
+            @RequestBody ScheduleRequestDto scheduleRequestDto,
+            HttpServletRequest httpRequest
+    ){
 
-        ScheduleResponseDto scheduleResponseDto = scheduleService.updateSchedule(id, scheduleRequestDto);
+        HttpSession session = httpRequest.getSession(false);
+        Long userId = (Long) session.getAttribute("sessionKey");
+
+        ScheduleResponseDto scheduleResponseDto = scheduleService.updateSchedule(scheduleId, userId, scheduleRequestDto);
 
         return new ResponseEntity<>(scheduleResponseDto , HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id){
-        scheduleService.deleteSchedule(id);
+    @DeleteMapping("/{scheduleId}")
+    public ResponseEntity<Void> deleteSchedule(
+            @PathVariable Long scheduleId,
+            HttpServletRequest httpRequest
+    ){
+
+        HttpSession session = httpRequest.getSession(false);
+        Long userId = (Long) session.getAttribute("sessionKey");
+
+        scheduleService.deleteSchedule(scheduleId, userId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
