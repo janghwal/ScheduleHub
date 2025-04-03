@@ -29,7 +29,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto) {
 
-        User findUser = userRepository.findUserByEmailOrElseThrow(scheduleRequestDto.getEmail());
+        User findUser = userRepository.findUserByIdOrElseThrow(scheduleRequestDto.getUserId());
 
         Schedule schedule = new Schedule(findUser.getUserName(), scheduleRequestDto.getTitle(), scheduleRequestDto.getContents());
         schedule.setUser(findUser);

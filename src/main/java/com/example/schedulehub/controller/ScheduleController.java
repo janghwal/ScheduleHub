@@ -3,6 +3,8 @@ package com.example.schedulehub.controller;
 import com.example.schedulehub.dto.ScheduleRequestDto;
 import com.example.schedulehub.dto.ScheduleResponseDto;
 import com.example.schedulehub.service.ScheduleService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,12 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto){
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto, HttpServletRequest httpRequest){
+
+        HttpSession session = httpRequest.getSession(false);
+        Long userId = (Long) session.getAttribute("sessionKey");
+
+        scheduleRequestDto.setUserId(userId);
 
         ScheduleResponseDto scheduleResponseDto = scheduleService.createSchedule(scheduleRequestDto);
 
