@@ -14,7 +14,7 @@ public class LoginFilter implements Filter {
 
     private static final String[] WHITE_LIST_POST = {"/login", "/user"};
 
-    private static final String[] WHITE_LIST_GET = {"/schedule", "/schedule/.*", "/user"};
+    private static final String[] WHITE_LIST_GET = {"/schedule", "/schedule/*", "/user", "/user/find", "/user/find/*" };
 
     @Override
     public void doFilter(
