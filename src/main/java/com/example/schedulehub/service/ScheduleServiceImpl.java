@@ -56,7 +56,11 @@ public class ScheduleServiceImpl implements ScheduleService{
     // 인증 필요
     @Transactional
     @Override
-    public ScheduleResponseDto updateSchedule(Long scheduleId, ScheduleRequestDto scheduleRequestDto) {
+    public ScheduleResponseDto updateSchedule(Long scheduleId, Long userId, ScheduleRequestDto scheduleRequestDto) {
+
+        if(isPasswordCorrect(scheduleId, userId)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
 
         Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
 

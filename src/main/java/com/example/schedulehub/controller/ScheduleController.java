@@ -57,7 +57,10 @@ public class ScheduleController {
             HttpServletRequest httpRequest
     ){
 
-        ScheduleResponseDto scheduleResponseDto = scheduleService.updateSchedule(scheduleId, scheduleRequestDto);
+        HttpSession session = httpRequest.getSession(false);
+        Long userId = (Long) session.getAttribute("sessionKey");
+
+        ScheduleResponseDto scheduleResponseDto = scheduleService.updateSchedule(scheduleId, userId, scheduleRequestDto);
 
         return new ResponseEntity<>(scheduleResponseDto , HttpStatus.OK);
     }
