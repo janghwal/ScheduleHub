@@ -15,13 +15,13 @@ public interface UserService {
 
     List<UserResponseDto> findAllUser();
 
-    UserResponseDto findUserById(Long id);
+    UserResponseDto findUserById(Long userId);
 
     UserResponseDto findUserByEmail(String email);
 
-    UserResponseDto updateUser(Long id, UserRequestDto userRequestDto);
+    UserResponseDto updateUser(Long userId, UserRequestDto userRequestDto);
 
-    void deleteUser(Long id);
+    void deleteUser(Long userId);
 
     Optional<User> login(LoginRequestDto loginRequestDto);
 }

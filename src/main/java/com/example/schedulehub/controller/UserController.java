@@ -41,10 +41,10 @@ public class UserController {
         return new ResponseEntity<>(findAllUser, HttpStatus.OK);
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long id){
+    @GetMapping("/find/{userId}")
+    public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long userId){
 
-        UserResponseDto findUser = userService.findUserById(id);
+        UserResponseDto findUser = userService.findUserById(userId);
 
         return new ResponseEntity<>(findUser, HttpStatus.OK);
     }

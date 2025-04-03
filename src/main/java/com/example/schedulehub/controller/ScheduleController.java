@@ -42,22 +42,22 @@ public class ScheduleController {
         return new ResponseEntity<>(allSchedule, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long id){
+    @GetMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long scheduleId){
 
-        ScheduleResponseDto findScheduleById = scheduleService.findScheduleById(id);
+        ScheduleResponseDto findScheduleById = scheduleService.findScheduleById(scheduleId);
 
         return new ResponseEntity<>(findScheduleById, HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
-            @PathVariable Long id,
+            @PathVariable Long scheduleId,
             @RequestBody ScheduleRequestDto scheduleRequestDto,
             HttpServletRequest httpRequest
     ){
 
-        ScheduleResponseDto scheduleResponseDto = scheduleService.updateSchedule(id, scheduleRequestDto);
+        ScheduleResponseDto scheduleResponseDto = scheduleService.updateSchedule(scheduleId, scheduleRequestDto);
 
         return new ResponseEntity<>(scheduleResponseDto , HttpStatus.OK);
     }

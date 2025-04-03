@@ -45,9 +45,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResponseDto findUserById(Long id) {
+    public UserResponseDto findUserById(Long userId) {
 
-        User findUser = userRepository.findUserByIdOrElseThrow(id);
+        User findUser = userRepository.findUserByIdOrElseThrow(userId);
 
         return new UserResponseDto(findUser);
     }
@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService{
     // 인증 필요
     @Override
     @Transactional
-    public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
+    public UserResponseDto updateUser(Long userId, UserRequestDto userRequestDto) {
 
-        User findUser = userRepository.findUserByIdOrElseThrow(id);
+        User findUser = userRepository.findUserByIdOrElseThrow(userId);
 
         if(userRequestDto.getUserName() == null && userRequestDto.getEmail() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
@@ -83,8 +83,8 @@ public class UserServiceImpl implements UserService{
 
     // 인증 필요
     @Override
-    public void deleteUser(Long id) {
-        User user = userRepository.findUserByIdOrElseThrow(id);
+    public void deleteUser(Long userId) {
+        User user = userRepository.findUserByIdOrElseThrow(userId);
 
         userRepository.delete(user);
     }

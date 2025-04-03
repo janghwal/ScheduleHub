@@ -46,9 +46,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public ScheduleResponseDto findScheduleById(Long id) {
+    public ScheduleResponseDto findScheduleById(Long scheduleId) {
 
-        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
 
         return new ScheduleResponseDto(findSchedule.getScheduleId(), findSchedule.getUserName(), findSchedule.getTitle(), findSchedule.getContents());
     }
@@ -56,9 +56,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     // 인증 필요
     @Transactional
     @Override
-    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public ScheduleResponseDto updateSchedule(Long scheduleId, ScheduleRequestDto scheduleRequestDto) {
 
-        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+        Schedule findSchedule = scheduleRepository.findScheduleByIdOrElseThrow(scheduleId);
 
         if(scheduleRequestDto.getTitle() == null && scheduleRequestDto.getContents() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
