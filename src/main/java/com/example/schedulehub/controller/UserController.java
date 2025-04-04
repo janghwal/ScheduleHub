@@ -29,6 +29,7 @@ public class UserController {
 
     private final UserService userService;
 
+//    회원가입
     @PostMapping
     public ResponseEntity<UserResponseDto> scheduleHubSignUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto){
 
@@ -37,6 +38,7 @@ public class UserController {
         return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
     }
 
+//    모든 유저 정보 조회
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAllUser(){
 
@@ -45,6 +47,7 @@ public class UserController {
         return new ResponseEntity<>(findAllUser, HttpStatus.OK);
     }
 
+//    식별자를 통한 유저 조회 (userId)
     @GetMapping("/find/{userId}")
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long userId){
 
@@ -53,6 +56,7 @@ public class UserController {
         return new ResponseEntity<>(findUser, HttpStatus.OK);
     }
 
+//    email을 통한 유저 조회 : email은 unique 특성을 가지기 때문에 후보키 특성을 가진다.
     @GetMapping("/find")
     public ResponseEntity<UserResponseDto> findUserByEmail(@Email(message = "이메일 형식을 입력하세요") @RequestParam String email){
 
@@ -61,6 +65,7 @@ public class UserController {
         return new ResponseEntity<>(findUser, HttpStatus.OK);
     }
 
+//    유저 정보 수정 로그인 후 진행 가능 이메일 이름 비밀번호 변경 가능
     @PatchMapping
     public ResponseEntity<UserResponseDto> updateUser(
             @Valid @RequestBody UserRequestDto userRequestDto,
@@ -78,6 +83,7 @@ public class UserController {
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
 
+//    유저 삭제 기능 : 회원 탈퇴 기능 로그인 후 진행 가능 진행 후 로그아웃
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(HttpServletRequest httpRequest, HttpServletResponse httpResponse){
 

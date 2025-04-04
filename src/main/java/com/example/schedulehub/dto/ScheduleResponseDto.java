@@ -4,6 +4,7 @@ import com.example.schedulehub.entity.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+//스케줄 관련 응답 정보를 담는 DTO
 @Getter
 @AllArgsConstructor
 public class ScheduleResponseDto {

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+//유저 관련 요청 정보를 담는 DTO
 @Getter
 @AllArgsConstructor
 public class UserRequestDto {

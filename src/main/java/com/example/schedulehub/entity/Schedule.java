@@ -25,6 +25,7 @@ public class Schedule extends AuditableEntity{
     @Setter
     private String contents;
 
+    //유저 테이블과 연결
     @Setter
     @ManyToOne
     @JoinColumn(name = "userId")

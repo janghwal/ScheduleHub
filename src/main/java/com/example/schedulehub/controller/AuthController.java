@@ -28,6 +28,7 @@ public class AuthController {
 
     private final UserService userService;
 
+//    로그인 기능 세션 쿠기 사용
     @PostMapping
     public ResponseEntity<Void> login(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletRequest httpRequest){
 
@@ -43,6 +44,7 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+//    로그아웃 기능 로그인 후 진행 가능
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest httpRequest, HttpServletResponse httpResponse){
 

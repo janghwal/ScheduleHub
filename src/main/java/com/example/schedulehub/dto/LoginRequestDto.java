@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+//로그인 요청을 위한 이메일과 비밀번호 담는 DTO
 @Getter
 @AllArgsConstructor
 public class LoginRequestDto {
