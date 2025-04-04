@@ -21,6 +21,7 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
+//    일정 생성 로그인 후 진행 가능
     @PostMapping
     public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto, HttpServletRequest httpRequest){
 
@@ -34,6 +35,7 @@ public class ScheduleController {
         return new ResponseEntity<>(scheduleResponseDto ,HttpStatus.CREATED);
     }
 
+//    모든 등록된 일정 조회
     @GetMapping
     public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule(){
 
@@ -42,6 +44,7 @@ public class ScheduleController {
         return new ResponseEntity<>(allSchedule, HttpStatus.OK);
     }
 
+//    스케줄 하나 조회 식별자 ID(scheduleId) 사용
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long scheduleId){
 
@@ -50,6 +53,7 @@ public class ScheduleController {
         return new ResponseEntity<>(findScheduleById, HttpStatus.OK);
     }
 
+//    일정 수정 로그인 후 진행 가능 식별자 ID(scheduleId)사용
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
             @PathVariable Long scheduleId,
@@ -65,6 +69,7 @@ public class ScheduleController {
         return new ResponseEntity<>(scheduleResponseDto , HttpStatus.OK);
     }
 
+//    일정 수정 로그인 후 진행 가능 식별자 ID(scheduleId)사용
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> deleteSchedule(
             @PathVariable Long scheduleId,

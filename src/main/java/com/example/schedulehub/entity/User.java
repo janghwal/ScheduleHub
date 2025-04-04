@@ -20,6 +20,7 @@ public class User extends AuditableEntity {
 
     @Setter
     @Column(nullable = false, unique = true)
+//    이메일 중복 제한
     private String email;
 
     @Setter

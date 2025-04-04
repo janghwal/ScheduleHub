@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+//회원가입 요청 정보를 담는 DTO
 @Getter
 @AllArgsConstructor
 public class SignUpRequestDto {
