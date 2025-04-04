@@ -67,12 +67,13 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         if(scheduleRequestDto.getTitle() == null && scheduleRequestDto.getContents() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "변경 할 값이 없습니다.");
-        }else if(scheduleRequestDto.getTitle() == null){
-            findSchedule.setContents(scheduleRequestDto.getContents());
-        }else if(scheduleRequestDto.getContents() == null){
+        }
+
+        if(scheduleRequestDto.getTitle() != null){
             findSchedule.setTitle(scheduleRequestDto.getTitle());
-        }else{
-            findSchedule.setTitle(scheduleRequestDto.getTitle());
+        }
+
+        if(scheduleRequestDto.getContents() != null){
             findSchedule.setContents(scheduleRequestDto.getContents());
         }
 
