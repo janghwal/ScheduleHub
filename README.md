@@ -16,3 +16,4 @@
 |로그인|POST| /login | 요청 body<br>{<br>“email” : “이메일”<br>“password” : “비밀번호”<br>} |-|200: OK|
 |로그 아웃|POST| /login/logout | JSESSIONID |-|200: OK|
 
+![image](https://github.com/user-attachments/assets/13ced60d-16ed-489c-af5d-0da6659aa110)
